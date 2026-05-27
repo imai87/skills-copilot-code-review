@@ -5,7 +5,10 @@ Uma aplicação FastAPI super simples que permite aos alunos visualizar e se ins
 ## Funcionalidades
 
 - Visualizar todas as atividades extracurriculares disponíveis
-- Inscrever-se em atividades
+- Inscrever-se e remover estudantes de atividades (com autenticação)
+- Login de professores para ações administrativas
+- Exibir anúncios ativos no topo da interface
+- Gerenciar anúncios (criar, editar e excluir) para usuários autenticados
 
 ## Como começar
 
@@ -31,6 +34,14 @@ Uma aplicação FastAPI super simples que permite aos alunos visualizar e se ins
 | ------ | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
 | GET    | `/activities`                                                     | Obtém todas as atividades com detalhes e número atual de participantes |
 | POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Inscreve-se em uma atividade                                         |
+| POST   | `/activities/{activity_name}/unregister?email=student@mergington.edu` | Remove estudante de uma atividade                                    |
+| POST   | `/auth/login?username=...&password=...`                          | Realiza login de professor                                           |
+| GET    | `/auth/check-session?username=...`                               | Valida sessão de usuário                                             |
+| GET    | `/announcements/active`                                           | Lista anúncios ativos para exibição pública                          |
+| GET    | `/announcements?teacher_username=...`                            | Lista todos os anúncios para gerenciamento (autenticado)             |
+| POST   | `/announcements?teacher_username=...`                            | Cria anúncio com data de expiração obrigatória                       |
+| PUT    | `/announcements/{announcement_id}?teacher_username=...`          | Atualiza anúncio existente                                            |
+| DELETE | `/announcements/{announcement_id}?teacher_username=...`          | Exclui anúncio                                                       |
 
 ## Modelo de Dados
 
@@ -46,4 +57,4 @@ A aplicação usa um modelo de dados simples com identificadores significativos:
    - Nome
    - Série
 
-Todos os dados são armazenados em memória, o que significa que serão resetados quando o servidor for reiniciado.
+Os dados são armazenados no MongoDB local (`mergington_high`) e inicializados com dados de exemplo quando a base estiver vazia.
